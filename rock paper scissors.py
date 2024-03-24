@@ -15,7 +15,6 @@ def handle_choice(user_choice):
     user_choice -= 1
     computer_choice = random.randint(0, 2)
     result = determine_winner(user_choice, computer_choice)
-    messagebox.showinfo("Result", result)
     if "win" in result:
         user_score += 1
     elif "lose" in result:
