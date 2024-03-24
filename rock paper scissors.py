@@ -1,4 +1,4 @@
-import tkinter as tk
+from tkinter import *
 from tkinter import messagebox
 import random
 def determine_winner(user_choice, computer_choice):
@@ -12,7 +12,6 @@ def determine_winner(user_choice, computer_choice):
         return "You lose"
 def handle_choice(user_choice):
     global user_score, computer_score
-    user_choice -= 1
     computer_choice = random.randint(0, 2)
     result = determine_winner(user_choice, computer_choice)
     if "win" in result:
@@ -32,17 +31,17 @@ def play_again():
         root.destroy()
 user_score = 0
 computer_score = 0
-root = tk.Tk()
+root = Tk()
 root.geometry("200x200")
 root.title("Rock Paper Scissors")
-rock_button = tk.Button(root, text="Rock", command=lambda: handle_choice(1))
+rock_button = Button(root, text="Rock", command=lambda: handle_choice(0))
 rock_button.pack(pady=5)
-paper_button = tk.Button(root, text="Paper", command=lambda: handle_choice(2))
+paper_button = Button(root, text="Paper", command=lambda: handle_choice(1))
 paper_button.pack(pady=5)
-scissors_button = tk.Button(root, text="Scissors", command=lambda: handle_choice(3))
+scissors_button = Button(root, text="Scissors", command=lambda: handle_choice(2))
 scissors_button.pack(pady=5)
-user_score_label = tk.Label(root, text="Your Score: " + str(user_score))
+user_score_label = Label(root, text="Your Score: " + str(user_score))
 user_score_label.pack()
-computer_score_label = tk.Label(root, text="Computer Score: " + str(computer_score))
+computer_score_label = Label(root, text="Computer Score: " + str(computer_score))
 computer_score_label.pack()
 root.mainloop()
