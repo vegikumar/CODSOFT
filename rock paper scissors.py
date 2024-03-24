@@ -1,69 +1,49 @@
+import tkinter as tk
+from tkinter import messagebox
 import random
-
-rock = '''
-    _______
----'   ____)
-      (_____)
-      (_____)
-      (____)
----.__(___)
-'''
-
-paper = '''
-    _______
----'   ____)____
-          ______)
-          _______)
-         _______)
----.__________)
-'''
-
-scissors = '''
-    _______
----'   ____)____
-          ______)
-       __________)
-      (____)
----.__(___)
-'''
-uscore = 0
-cscore = 0
-game_images = [rock, paper, scissors]
-def game():
-    global uscore, cscore
-    user_choice = int(input("What do you choose? Type 0 for Rock, 1 for Paper or 2 for Scissors.\n"))
-    if user_choice >= 3 or user_choice < 0:
-        print("You typed an invalid number, you lose!")
+def determine_winner(user_choice, computer_choice):
+    if user_choice == computer_choice:
+        return "It's a draw"
+    elif (user_choice == 0 and computer_choice == 2) or \
+         (user_choice == 1 and computer_choice == 0) or \
+         (user_choice == 2 and computer_choice == 1):
+        return "You win!"
     else:
-        print(game_images[user_choice])
-        computer_choice = random.randint(0, 2)
-        print("Computer chose:")
-        print(game_images[computer_choice])
-        if user_choice == 0 and computer_choice == 2:
-            print("You win!")
-            uscore += 1
-        elif computer_choice == 0 and user_choice == 2:
-            print("You lose")
-            cscore += 1
-        elif computer_choice > user_choice:
-            print("You lose")
-            cscore += 1
-        elif user_choice > computer_choice:
-            print("You win!")
-            uscore += 1
-        elif computer_choice == user_choice:
-            print("It's a draw")
-        print("Your Score =", uscore)
-        print("Computer Score =", cscore)
-def main():
-    while True:
-        user_input = input("Do you want to play a game? (yes/no): ").lower()
-        if user_input == "yes":
-            game()
-        elif user_input == "no":
-            print("Exiting the game.")
-            break
-        else:
-            print("Invalid input. Please enter 'yes' or 'no'.")
-if __name__ == "__main__":
-    main()
+        return "You lose"
+def handle_choice(user_choice):
+    global user_score, computer_score
+    user_choice -= 1
+    computer_choice = random.randint(0, 2)
+    result = determine_winner(user_choice, computer_choice)
+    messagebox.showinfo("Result", result)
+    if "win" in result:
+        user_score += 1
+    elif "lose" in result:
+        computer_score += 1
+    update_scores()
+    play_again()
+def update_scores():
+    user_score_label.config(text="Your Score: " + str(user_score))
+    computer_score_label.config(text="Computer Score: " + str(computer_score))
+def play_again():
+    answer = messagebox.askyesno("Play Again", "Do you want to play again?")
+    if answer:
+        pass
+    else:
+        root.destroy()
+user_score = 0
+computer_score = 0
+root = tk.Tk()
+root.geometry("200x200")
+root.title("Rock Paper Scissors")
+rock_button = tk.Button(root, text="Rock", command=lambda: handle_choice(1))
+rock_button.pack(pady=5)
+paper_button = tk.Button(root, text="Paper", command=lambda: handle_choice(2))
+paper_button.pack(pady=5)
+scissors_button = tk.Button(root, text="Scissors", command=lambda: handle_choice(3))
+scissors_button.pack(pady=5)
+user_score_label = tk.Label(root, text="Your Score: " + str(user_score))
+user_score_label.pack()
+computer_score_label = tk.Label(root, text="Computer Score: " + str(computer_score))
+computer_score_label.pack()
+root.mainloop()
